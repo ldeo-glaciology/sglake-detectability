@@ -2,13 +2,14 @@ sglake-detectability
 
 Author: Aaron Stubblefield (Columbia University, LDEO).
 
-# Introduction
+# Overview
 This repository contains FEniCS python code for simulating subglacial lake
 filling-draining events. The model is isothermal Stokes flow with nonlinear
 ("Glen's law") viscosity. Grounding line migration and ice-water/ice-air free
 surface evolution are included. The contact conditions that determine whether
 ice remains in contact with the bed or goes afloat are enforced with a penalty
-functional.
+functional. I am using this model to study the "detectability" of subglacial
+lake filling/draining events from surface observations.
 
 # Dependencies
 ## Required dependencies
@@ -66,7 +67,7 @@ To run the code:
 
 1. Start the FEniCS Docker image.
 
-2. In Docker, run the main file from the parent directory: `python3 ./source/main.py`.
+2. In Docker, run the main file from the parent directory: `python3 ./source/main.py`
 
 
 # Output
