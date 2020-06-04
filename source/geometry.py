@@ -9,7 +9,7 @@ from params import Lngth,Hght,tol,X_fine,nx
 
 def bed(x):
     # generate bed topography
-    B = -7*(np.exp((-(x-Lngth/2.0)**2)/((0.01*4*Lngth)**2) )) + 3.5
+    B = -7*(np.exp((-(x-Lngth/2.0)**2)/((0.01*8*Lngth)**2) )) + 3.5
     return B
 
 def interface(x):

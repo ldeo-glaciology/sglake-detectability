@@ -235,7 +235,7 @@ def plot_surfaces(F_h,F_s,XL,XR):
         Gamma_h = F_h(X)
         Gamma_s = F_s(X)
 
-        plt.figure(figsize=(8,4))
+        plt.figure(figsize=(8,5))
 
         # Plot upper surface
         plt.plot(X/1000-0.5*Lngth/1000,Gamma_h[:]-0.99*Hght,color='royalblue',linewidth=1,label=r'$h-0.99h_0$')
@@ -260,10 +260,10 @@ def plot_surfaces(F_h,F_s,XL,XR):
         # Label axes and save png:
         plt.xlabel(r'$x$ (km)',fontsize=20)
         plt.ylabel(r'$z$ (m)',fontsize=20)
-        plt.yticks([-7,0,8,10,12],[r'$b_\mathrm{min}$','0',r'$h_0-2$',r'$h_0$',r'$h_0+2$'],fontsize=16)
+        plt.yticks([np.min(bed(X)),0,0.01*Hght],[r'$b_\mathrm{min}$','0',r'$h_0$'],fontsize=16)
         plt.xticks(fontsize=16)
 
-        plt.ylim(np.min(bed(X))-2.0,20.0,8)
+        plt.ylim(np.min(bed(X))-2.0,0.01*Hght+5,8)
         plt.xlim(-0.5*Lngth/1000.0,0.5*Lngth/1000.0)
         plt.tight_layout()
         plt.savefig('surfaces',bbox_inches='tight')

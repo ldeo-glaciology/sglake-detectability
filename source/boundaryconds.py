@@ -4,7 +4,7 @@
 # (2) mark the boundaries of the mesh, AND...
 # (3) create the Dirichlet boundary conditions
 #-------------------------------------------------------------------------------
-from params import tol,Lngth,Hght,wall_bcs
+from params import tol,Lngth,Hght
 from geometry import bed
 import numpy as np
 from dolfin import *
@@ -75,17 +75,11 @@ def mark_boundary(mesh):
 #------------------------------------------------------------------------------
 
 def create_dir_bcs(W,boundary_markers):
-    # Apply inflow and outflow boundary conditions to the system.
-    # These are applied to the horizontal velocity component.
+    # create Dirichlet conditions for the side-walls of the domain:
+    # zero vertical velocity
 
-    # dirichlet conditions: apply zero inflow/outflow velocity
-    if wall_bcs == 'dirichlet':
-        bcu1 = DirichletBC(W.sub(0).sub(0), Constant(0.0), boundary_markers,1)
-        bcu2 = DirichletBC(W.sub(0).sub(0), Constant(0.0), boundary_markers,2)
-        bcs = [bcu1,bcu2]
-
-    # neumann conditions: return empty array of dirichlet conditions
-    elif wall_bcs == 'neumann':
-        bcs = []
+    bcw1 = DirichletBC(W.sub(0).sub(1), Constant(0.0), boundary_markers,1)
+    bcw2 = DirichletBC(W.sub(0).sub(1), Constant(0.0), boundary_markers,2)
+    bcs = [bcw1,bcw2]
 
     return bcs

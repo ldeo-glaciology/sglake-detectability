@@ -12,7 +12,7 @@ sys.path.insert(0, './source')
 import matplotlib.pyplot as plt
 import numpy as np
 from geometry import interface, bed
-from params import tol,t_final,Lngth,Hght,t_period,Cexp
+from params import tol,t_final,Lngth,Hght,t_period,C
 import subprocess
 from scipy.misc import derivative
 from scipy.interpolate import interp1d
@@ -33,7 +33,7 @@ process1 = subprocess.Popen(bashCommand1.split(), stdout=subprocess.PIPE)
 output, error = process1.communicate()
 
 # Load relevant files
-resultsname = 'results_t'+format(t_period/3.154e7,'.1f')+'_H'+format(Hght/1000.0,'.1f')+'_C'+Cexp
+resultsname = 'results_t'+format(t_period/3.154e7,'.1f')+'_H'+format(Hght/1000.0,'.1f')+'_C'+str(int(np.floor(np.log10(C))))
 
 Gamma_s = np.loadtxt(resultsname+'/Gamma_s')             # Lower surface
 Gamma_h = np.loadtxt(resultsname+'/Gamma_h')             # Upper surface

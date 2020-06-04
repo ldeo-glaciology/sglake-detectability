@@ -15,7 +15,7 @@ from meshfcns import mesh_routine
 import scipy.integrate as scpint
 import os
 from params import (rho_i,g,tol,t_final,Lngth,Hght,nt,dt,
-                    print_convergence,X_fine,nx,Nx,Ny,Cexp,t_period)
+                    print_convergence,X_fine,nx,Nx,Ny,t_period,C)
 
 #--------------------Initial conditions-----------------------------------------
 # compute initial mean elevation of ice-water interface and initial lake volume.
@@ -23,7 +23,7 @@ s_mean0 = np.mean(interface(X_fine)[interface(X_fine)-bed(X_fine)>tol])
 lake_vol_0 = scpint.quad(lambda x: interface(x)-bed(x),0,Lngth,full_output=1)[0]
 #-------------------------------------------------------------------------------
 
-resultsname = 'results_t'+format(t_period/3.154e7,'.1f')+'_H'+format(Hght/1000.0,'.1f')+'_C'+Cexp
+resultsname = 'results_t'+format(t_period/3.154e7,'.1f')+'_H'+format(Hght/1000.0,'.1f')+'_C'+str(int(np.floor(np.log10(C))))
 
 os.mkdir(resultsname)    # make a directory for the results.
 

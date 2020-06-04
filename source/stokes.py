@@ -1,6 +1,6 @@
 # This file contains the functions needed for solving the Stokes system.
 
-from params import rho_i,g,tol,B,rm2,rho_w,C,eps_p,eps_v,dt,quad_degree,Lngth,wall_bcs
+from params import rho_i,g,tol,B,rm2,rho_w,C,eps_p,eps_v,dt,quad_degree,Lngth
 from boundaryconds import mark_boundary, create_dir_bcs
 from geometry import bed
 from hydrology import Vdot
@@ -18,7 +18,7 @@ def Pi(u,nu):
         un = dot(u,nu)
         return 0.5*(un**2.0+un*abs(un))
 
-def weak_form_lake(u,p,pw,v,q,qw,f,g_lake,g_in,g_out,ds,nu,T,lake_vol_0,t):
+def weak_form(u,p,pw,v,q,qw,f,g_lake,g_in,g_out,ds,nu,T,lake_vol_0,t):
     # define weak form of the subglacial lake problem
 
     # measures of the lower boundary (L0) and ice-water boundary (L1)
@@ -33,11 +33,8 @@ def weak_form_lake(u,p,pw,v,q,qw,f,g_lake,g_in,g_out,ds,nu,T,lake_vol_0,t):
          + (g_lake+pw+Constant(rho_w*g*dt)*(dot(u,nu)+Constant(Vdot(lake_vol_0,t)/L1)))*inner(nu, v)*ds(3)\
          + qw*(inner(u,nu)+Constant(Vdot(lake_vol_0,t))/(L0) )*ds(3)\
          + Constant(1/eps_p)*dPi(u,nu)*dot(v,nu)*ds(3)\
-         + Constant(C)*inner(dot(T,u),dot(T,v))*ds(3)
-
-    if wall_bcs == 'neumann':
-    # append neumman (cryostatic) boundary conditions on side-walls
-       Fw +=  g_out*inner(nu,v)*ds(2)+g_in*inner(nu,v)*ds(1)
+         + Constant(C)*inner(dot(T,u),dot(T,v))*ds(3)\
+         +  g_out*inner(nu,v)*ds(2) + g_in*inner(nu,v)*ds(1)
 
     return Fw
 
@@ -65,10 +62,9 @@ def stokes_solve_lake(mesh,lake_vol_0,s_mean,F_h,t):
         # Define Neumann condition at ice-water interface
         g_lake = Expression('rho_w*g*(s_mean-x[1])',rho_w=rho_w,g=g,s_mean=s_mean,degree=1)
 
-        # Define cryostatic conditions for inflow/outflow boundaries (for neumann case)
+        # Define cryostatic normal stress conditions for inflow/outflow boundaries
         g_out = Expression('rho_i*g*(h_out-x[1])',rho_i=rho_i,g=g,h_out=h_out,degree=1)
         g_in = Expression('rho_i*g*(h_in-x[1])',rho_i=rho_i,g=g,h_in=h_in,degree=1)
-
 
         f = Constant((0,-rho_i*g))        # Body force
         nu = FacetNormal(mesh)            # Outward-pointing unit normal to the boundary
@@ -80,7 +76,7 @@ def stokes_solve_lake(mesh,lake_vol_0,s_mean,F_h,t):
         ds = Measure('ds', domain=mesh, subdomain_data=boundary_markers)
 
         # define weak form
-        Fw = weak_form_lake(u,p,pw,v,q,qw,f,g_lake,g_in,g_out,ds,nu,T,lake_vol_0,t)
+        Fw = weak_form(u,p,pw,v,q,qw,f,g_lake,g_in,g_out,ds,nu,T,lake_vol_0,t)
 
         # create dirichlet boundary conditions
         bcs_u = create_dir_bcs(W,boundary_markers)
