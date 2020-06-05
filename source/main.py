@@ -15,7 +15,7 @@ from meshfcns import mesh_routine
 import scipy.integrate as scpint
 import os
 from params import (rho_i,g,tol,t_final,Lngth,Hght,nt,dt,
-                    print_convergence,X_fine,nx,Nx,Ny,t_period,C)
+                    print_convergence,X_fine,nx,Nx,Ny,t_period,C,save_vtk)
 
 #--------------------Initial conditions-----------------------------------------
 # compute initial mean elevation of ice-water interface and initial lake volume.
@@ -31,8 +31,9 @@ if print_convergence == 'off':
     set_log_level(40)    # suppress Newton convergence information if desired.
 
 # create VTK files
-vtkfile_u = File(resultsname+'/stokes/u.pvd')
-vtkfile_p = File(resultsname+'/stokes/p.pvd')
+if save_vtk == 'on':
+    vtkfile_u = File(resultsname+'/stokes/u.pvd')
+    vtkfile_p = File(resultsname+'/stokes/p.pvd')
 
 # create mesh
 p0 = Point((0.0,0.0))
@@ -89,12 +90,13 @@ for i in range(nt):
     #compute difference between hydrostatic pressure and mean water pressure (in kPa)
     dPw[i] = (np.abs(w.sub(2).compute_vertex_values(mesh)[0])-rho_i*g*(h_mean_i-s_mean_i))/1.0e3
 
-    # save Stokes solution
-    _u, _p,_pw = w.split()
-    _u.rename("vel", "U")
-    _p.rename("press","P")
-    vtkfile_u << (_u,t)
-    vtkfile_p << (_p,t)
+    # save Stokes solution if desired
+    if save_vtk == 'on':
+        _u, _p,_pw = w.split()
+        _u.rename("vel", "U")
+        _p.rename("press","P")
+        vtkfile_u << (_u,t)
+        vtkfile_p << (_p,t)
 
 
     # update time

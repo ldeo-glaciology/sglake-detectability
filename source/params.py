@@ -10,6 +10,9 @@ realtime_plot = 'off'
 # Turn 'on' or 'off' Newton convergence information:
 print_convergence = 'off'
 
+# save vtk files for stokes solution if 'on':
+save_vtk = 'off'
+
 #-------------------------------------------------------------------------------
 #-----------------------------MODEL PARAMETERS----------------------------------
 # physical units:
@@ -32,7 +35,7 @@ C = 1.0e6                          # sliding law friction coefficient (Pa s/m)
 # numerical parameters
 eps_v = 1.0e-15                    # flow law regularization parameter
 eps_p = 1.0e-13                    # penalty method parameter
-quad_degree = 16                   # quadrature degree for weak forms
+quad_degree = 20                   # quadrature degree for weak forms
 
 tol = 1.0e-2                       # numerical tolerance for boundary geometry:
                                    # s(x,t) - b(x) > tol on ice-water boundary,
@@ -45,7 +48,7 @@ Ny = int(Hght/500.0)               # number of elements in vertical direction
 Nx = int(Lngth/500.0)              # number of elements in horizontal direction
 
 # time-stepping parameters
-t_period = 1.0*3.154e7             # oscillation period (secs; yr*sec_per_year)
+t_period = 5.0*3.154e7             # oscillation period (secs; yr*sec_per_year)
 t_final = 2.0*t_period             # final time
 nt_per_cycle = 250                 # number of timesteps per oscillation
 nt = int(t_final/t_period*nt_per_cycle) # number of time steps
