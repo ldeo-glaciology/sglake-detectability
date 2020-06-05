@@ -34,7 +34,7 @@ def weak_form(u,p,pw,v,q,qw,f,g_lake,g_in,g_out,ds,nu,T,lake_vol_0,t):
          + qw*(inner(u,nu)+Constant(Vdot(lake_vol_0,t))/(L0) )*ds(3)\
          + Constant(1/eps_p)*dPi(u,nu)*dot(v,nu)*ds(3)\
          + Constant(C)*inner(dot(T,u),dot(T,v))*ds(3)\
-         +  g_out*inner(nu,v)*ds(2) + g_in*inner(nu,v)*ds(1)
+         + g_out*inner(nu,v)*ds(2) + g_in*inner(nu,v)*ds(1)
 
     return Fw
 
@@ -82,7 +82,7 @@ def stokes_solve_lake(mesh,lake_vol_0,s_mean,F_h,t):
         bcs_u = create_dir_bcs(W,boundary_markers)
 
         # solve for (u,p,pw).
-        solve(Fw == 0, w, bcs=bcs_u,solver_parameters={"newton_solver":{"relative_tolerance": 1e-14,"maximum_iterations":100}},form_compiler_parameters={"quadrature_degree":quad_degree,"optimize":True,"eliminate_zeros":False})
+        solve(Fw == 0, w, bcs=bcs_u,solver_parameters={"newton_solver":{"relative_tolerance": 1e-14,"maximum_iterations":50}},form_compiler_parameters={"quadrature_degree":quad_degree,"optimize":True,"eliminate_zeros":False})
 
         # compute penalty functional residual
         P_res = assemble(Pi(u,nu)*ds(3))

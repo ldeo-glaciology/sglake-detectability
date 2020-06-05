@@ -27,7 +27,7 @@ B = (2**((n-1.0)/(2*n)))*B0        # coefficient in weak form (Pa s^{1/n})
 rho_i = 917.0                      # density of ice (kg/m^3)
 rho_w = 1000.0                     # density of water (kg/m^3)
 g = 9.81                           # gravitational acceleration (m/s^2)
-C = 1.0e10                         # sliding law friction coefficient (Pa s/m)
+C = 1.0e6                          # sliding law friction coefficient (Pa s/m)
 
 # numerical parameters
 eps_v = 1.0e-15                    # flow law regularization parameter
@@ -41,8 +41,8 @@ tol = 1.0e-2                       # numerical tolerance for boundary geometry:
 # geometry/mesh parameters
 Hght = 1000.0                      # (initial) height of the domain (m)
 Lngth = 100*1000.0                 # length of the domain (m)
-Ny = int(Hght/250.0)               # number of elements in vertical direction
-Nx = int(Lngth/250.0)              # number of elements in horizontal direction
+Ny = int(Hght/500.0)               # number of elements in vertical direction
+Nx = int(Lngth/500.0)              # number of elements in horizontal direction
 
 # time-stepping parameters
 t_period = 1.0*3.154e7             # oscillation period (secs; yr*sec_per_year)

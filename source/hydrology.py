@@ -1,6 +1,7 @@
 #-------------------------------------------------------------------------------
 # This function defines the rate of water volume change in the subglacial lake.
-# *Default = sinusoidal timeseries
+# *Default volume change = sinusoidal timeseries
+# (of course you can calculate dVol/dt analytically for the default example)
 #-------------------------------------------------------------------------------
 
 import numpy as np
@@ -14,6 +15,6 @@ def Vol(t,lake_vol_0):
 
 def Vdot(lake_vol_0,t):
     # compute rate of subglacial lake volume change
-    dt_fine = 3.154e7/5000.0       # timestep for computing derivative (1/5000 yr)         
+    dt_fine = 3.154e7/5000.0       # timestep for computing derivative (1/5000 yr)
     Vd = scm.derivative(Vol,t,dx=dt_fine,args=(lake_vol_0,))
     return Vd
