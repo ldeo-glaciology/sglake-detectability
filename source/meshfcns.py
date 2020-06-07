@@ -125,17 +125,17 @@ def get_baseslope(w,mesh):
     F_s = interp1d(X,Y,kind='linear',fill_value='extrapolate',bounds_error=False)
 
     # Define a FEniCS expression for the lower surface elevation
-    class ExpressionPhi_s(UserExpression):
+    class base_expr(UserExpression):
         def eval(self,value,x):
             value[0] = F_s(x[0])
 
     # Compute the slope of the lower surface in FEniCS
     V = FunctionSpace(mesh,'CG',1)
-    Phi_s = ExpressionPhi_s(element=V.ufl_element(),domain=mesh)
+    base = base_expr(element=V.ufl_element(),domain=mesh)
 
-    sx = Dx(Phi_s,0)
+    base_x = Dx(base,0)
     baseslope = Function(V)
-    baseslope.assign(project(sx,V))
+    baseslope.assign(project(base_x,V))
 
     return baseslope, F_s
 
@@ -170,17 +170,17 @@ def get_surfslope(w,mesh):
     F_h = interp1d(X,Y,kind='linear',fill_value='extrapolate',bounds_error=False)
 
     # Define a FEniCS expression for the upper surface elevation
-    class ExpressionPhi_h(UserExpression):
+    class surf_expr(UserExpression):
         def eval(self,value,x):
             value[0] = F_h(x[0])
 
     # Compute slope of upper surface
     V = FunctionSpace(mesh,'CG',1)
-    Phi_h = ExpressionPhi_h(element=V.ufl_element(),domain=mesh)
+    surf = surf_expr(element=V.ufl_element(),domain=mesh)
 
-    hx = Dx(Phi_h,0)
+    surf_x = Dx(surf,0)
     surfslope = Function(V)
-    surfslope.assign(project(hx,V))
+    surfslope.assign(project(surf_x,V))
 
     return surfslope,F_h
 
@@ -189,7 +189,7 @@ def get_surfslope(w,mesh):
 
 def get_glines(F_s):
     # Computes minimum and maximum grounding line positions given the
-    # lower surface elevation function s and the bed geometry.
+    # lower surface elevation function and the bed geometry.
 
     s = F_s(X_fine)
     s_new = np.copy(s)
