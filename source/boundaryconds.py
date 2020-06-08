@@ -4,7 +4,7 @@
 # (2) mark the boundaries of the mesh, AND...
 # (3) create the Dirichlet boundary conditions
 #-------------------------------------------------------------------------------
-from params import tol,Lngth,Hght,wall_bcs,U0
+from params import tol,Lngth,Hght,wall_bcs,U0,basin_width
 from geometry import bed
 import numpy as np
 from dolfin import *
@@ -22,9 +22,17 @@ class WaterBoundary(SubDomain):
         return (on_boundary and (x[1]<0.5*Hght))
 
 class BedBoundary(SubDomain):
-    # Ice-bed boundary
+    # Ice-bed boundary away from the lake; the portions near the lake are overwritten
+    # by BasinBoundary.
+    # Lifting of ice from the bed *is not* allowed on this boundary.
     def inside(self, x, on_boundary):
         return (on_boundary and ((x[1]-bed(x[0]))<=tol))
+
+class BasinBoundary(SubDomain):
+    # Ice-bed boundary near the lake (i.e., in the lake basin).
+    # Lifting of ice from the bed *is* allowed on this boundary.
+    def inside(self, x, on_boundary):
+        return (on_boundary and ((x[1]-bed(x[0]))<=tol and np.abs(x[0]-0.5*Lngth)<basin_width) )
 
 class LeftBoundary(SubDomain):
     # Left boundary
@@ -45,8 +53,9 @@ def mark_boundary(mesh):
     # Boundary marker numbering convention:
     # 1 - Left boundary
     # 2 - Right boundary
-    # 3 - Ice-bed boundary
+    # 3 - Ice-bed boundary *in* the lake basin (lifting ice off bed is allowed).
     # 4 - Ice-water boundary
+    # 5 - Ice-bed boundary *away* from the lake basin (lifting ice off bed is not allowed).
     #
     # This function returns these markers, which are used to define the
     # boundary integrals and dirichlet conditions.
@@ -58,9 +67,13 @@ def mark_boundary(mesh):
     bdryWater = WaterBoundary()
     bdryWater.mark(boundary_markers, 4)
 
-    # Mark ice-bed boundary
+    # Mark ice-bed boundary away from lake
     bdryBed = BedBoundary()
-    bdryBed.mark(boundary_markers, 3)
+    bdryBed.mark(boundary_markers, 5)
+
+    # Mark ice-bed boundary near lake
+    bdryBasin = BasinBoundary()
+    bdryBasin.mark(boundary_markers, 3)
 
     # Mark inflow boundary
     bdryLeft = LeftBoundary()
@@ -76,13 +89,15 @@ def mark_boundary(mesh):
 
 def create_dir_bcs(W,boundary_markers):
     # create Dirichlet conditions for the side-walls of the domain:
-    # zero vertical velocity
 
     if wall_bcs == 'cryostatic':
+        # zero vertical velocity on inflow/outflow boundaries
         bcw1 = DirichletBC(W.sub(0).sub(1), Constant(0.0), boundary_markers,1)
         bcw2 = DirichletBC(W.sub(0).sub(1), Constant(0.0), boundary_markers,2)
         bcs = [bcw1,bcw2]
+
     elif wall_bcs == 'throughflow':
+        # prescribed horizontal velocity on inflow boundary
         bcu1 = DirichletBC(W.sub(0).sub(0), Constant(U0), boundary_markers,1)
         bcs = [bcu1]
 

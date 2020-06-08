@@ -49,7 +49,6 @@ x_left = np.zeros(nt)             # left grounding line position
 x_right = np.zeros(nt)            # right grounding line position
 lake_vol = np.zeros(nt)           # lake volume
 dPw = np.zeros(nt)                # water pressure - hydrostatic pressure
-P_res = np.zeros(nt)              # penalty functional residual
 
 t = 0                             # time
 
@@ -67,10 +66,9 @@ for i in range(nt):
         F_h = lambda x: Hght                  # Ice-air surface function
         F_s = lambda x: interface(x)          # Lower surface function
 
-    # solve the Stoke problem.
-    # returns solutions "w" and penalty functional residual "Perr_i"
+    # solve the Stoke problem, returns solution "w"
 
-    w,P_res_i = stokes_solve_lake(mesh,lake_vol_0,s_mean_i,F_h,t)
+    w = stokes_solve_lake(mesh,lake_vol_0,s_mean_i,F_h,t)
 
     # solve the surface kinematic equations, move the mesh, and compute the
     # grounding line positions.
@@ -78,7 +76,6 @@ for i in range(nt):
     mesh,F_s,F_h,s_mean_i,h_mean_i,XL,XR = mesh_routine(w,mesh,dt)
 
     # save quantities of interest
-    P_res[i] = P_res_i
     x_left[i] = XL
     x_right[i] = XR
     Gamma_s[:,i] = F_s(X_fine)

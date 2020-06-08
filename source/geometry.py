@@ -4,8 +4,7 @@
 #-------------------------------------------------------------------------------
 
 import numpy as np
-import matplotlib.pyplot as plt
-from params import Lngth,Hght,tol,X_fine,nx
+from params import Lngth,nx
 
 def bed(x):
     # generate bed topography
