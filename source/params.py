@@ -48,7 +48,7 @@ Ny = int(Hght/500.0)               # number of elements in vertical direction
 Nx = int(Lngth/500.0)              # number of elements in horizontal direction
 
 # time-stepping parameters
-t_period = 5.0*3.154e7             # oscillation period (secs; yr*sec_per_year)
+t_period = 2.0*3.154e7             # oscillation period (secs; yr*sec_per_year)
 t_final = 2.0*t_period             # final time
 nt_per_cycle = 250                 # number of timesteps per oscillation
 nt = int(t_final/t_period*nt_per_cycle) # number of time steps
@@ -62,3 +62,14 @@ nx = 10000                         # number of grid points for interpolating
 
 X_fine = np.linspace(0,Lngth,nx)   # horizontal coordinate for computing surface
                                    # slopes and plotting.
+
+# choose side-wall boundary condition type
+wall_bcs = "cryostatic"     # no net horizontal inflow prescribed:
+                            # cryostatic normal stress and zero vertical velocity
+                            # on inflow/outflow boundaries
+
+#wall_bcs = "throughflow"   # horizontal inflow speed prescribed
+                            # zero vertical shear stress on inflow & outflow
+                            # cryostatic normal stress on outflow boundary
+
+U0 = 500.0/3.154e7          # inflow speed for throughflow bc's

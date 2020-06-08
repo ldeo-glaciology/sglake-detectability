@@ -103,14 +103,19 @@ are created by linear interpolation of the mesh nodes in SciPy.
 
 Model options and parameters can be set in the **params.py** file. For example:
 
-
-1. *Real-time plotting* is available by setting `realtime_plot = "on"` in the
-**params.py** file. This outputs a png called 'surfaces' of the free surface geometry at each
-timestep.
+1. The inflow/outflow boundary conditions can be set to either `wall_bcs="throughflow"`
+or `wall_bcs="cryostatic"`. The `throughflow` conditions have a specified horizontal inflow
+velocity `U0` and a cryostatic normal stress condition on the outflow boundary.
+The `noflow` conditions use a cryostatic normal stress condition and zero
+vertical velocity on both the inflow and outflow boundaries.
 
 2. Parameters of interest in **params.py** that may be modified are `t_period` (period of oscillation)
 `nt_per_cycle` (number of timesteps per cycle), `Hght` (ice thickness), and `C`
 (sliding law coefficient).
 
-3. The lake volume change timeseries may be modified
+3. *Real-time plotting* is available by setting `realtime_plot = "on"` in the
+**params.py** file. This outputs a png called 'surfaces' of the free surface geometry at each
+timestep.
+
+4. The lake volume change timeseries may be modified
 in the **hydrology.py** file.

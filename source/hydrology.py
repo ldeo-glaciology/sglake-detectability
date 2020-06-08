@@ -11,7 +11,7 @@ from params import nt,t_period,t_final
 
 def Vol(t,lake_vol_0):
     # define sinusoidal volume change
-    return (0.4*lake_vol_0)*np.cos(2*np.pi*t/(t_period))
+    return (0.45*lake_vol_0)*np.cos(2*np.pi*t/(t_period))
 
 def Vdot(lake_vol_0,t):
     # compute rate of subglacial lake volume change
