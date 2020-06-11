@@ -81,10 +81,10 @@ for i in range(nt):
     Gamma_s[:,i] = F_s(X_fine)
     Gamma_h[:,i] = F_h(X_fine)
 
-    #compute lake volume: integral of lower surface minus the bed elevation
+    # compute lake volume: integral of lower surface minus the bed elevation
     lake_vol[i] = scpint.quad(lambda x: F_s(x)-bed(x),0,Lngth,full_output=1)[0]
 
-    #compute difference between hydrostatic pressure and mean water pressure (in kPa)
+    # compute difference between hydrostatic pressure and mean water pressure (in kPa)
     dPw[i] = (np.abs(w.sub(2).compute_vertex_values(mesh)[0])-rho_i*g*(h_mean_i-s_mean_i))/1.0e3
 
     # save Stokes solution if desired

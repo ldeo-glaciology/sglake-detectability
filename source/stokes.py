@@ -1,6 +1,6 @@
 # This file contains the functions needed for solving the Stokes system.
 
-from params import rho_i,g,tol,B,rm2,rho_w,C,eps_u,eps_b,eps_v,dt,quad_degree,Lngth,wall_bcs
+from params import rho_i,g,tol,B,rm2,rho_w,C,eps_p,eps_v,dt,quad_degree,Lngth
 from boundaryconds import mark_boundary, create_dir_bcs
 from geometry import bed
 from hydrology import Vdot
@@ -32,16 +32,9 @@ def weak_form(u,p,pw,v,q,qw,f,g_lake,g_in,g_out,ds,nu,T,lake_vol_0,t):
          + qw*(inner(u,nu)+Constant(Vdot(lake_vol_0,t))/(L0))*ds(4)\
          + (g_lake+pw+Constant(rho_w*g*dt)*(dot(u,nu)+Constant(Vdot(lake_vol_0,t)/L1)))*inner(nu, v)*ds(3)\
          + qw*(inner(u,nu)+Constant(Vdot(lake_vol_0,t))/(L0) )*ds(3)\
-         + Constant(1/eps_u)*dPi(u,nu)*dot(v,nu)*ds(3)\
+         + Constant(1/eps_p)*dPi(u,nu)*dot(v,nu)*ds(3)\
          + Constant(C)*inner(dot(T,u),dot(T,v))*ds(3)\
-         + Constant(C)*inner(dot(T,u),dot(T,v))*ds(5)\
-         + Constant(1/eps_b)*dot(u,nu)*dot(v,nu)*ds(5)\
-         + g_out*inner(nu,v)*ds(2)
-
-    if wall_bcs == 'cryostatic':
-            # append cryostatic stress condition on inflow boundary in the
-            # "cryostatic" setup
-         Fw += g_in*inner(nu,v)*ds(1)
+         + g_out*inner(nu,v)*ds(2) + g_in*inner(nu,v)*ds(1)
 
     return Fw
 

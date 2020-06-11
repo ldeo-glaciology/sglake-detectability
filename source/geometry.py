@@ -4,11 +4,11 @@
 #-------------------------------------------------------------------------------
 
 import numpy as np
-from params import Lngth,nx
+from params import Lngth
 
 def bed(x):
     # generate bed topography
-    B = -5*(np.exp((-(x-Lngth/2.0)**2)/((0.01*8*Lngth)**2) )) + 2.5
+    B = -5*(np.exp((-(x-Lngth/2.0)**2)/(8000**2) )) + 2.5
     return B
 
 def interface(x):
