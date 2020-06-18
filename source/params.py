@@ -55,7 +55,7 @@ C = args.C                         # sliding law friction coefficient (Pa s/m)
 eps_p = 1.0e-13                    # penalty method parameter for unilateral condition
 eps_v = 1.0e-15                    # flow law regularization parameter
 
-quad_degree = 20                   # quadrature degree for weak forms
+quad_degree = 22                   # quadrature degree for weak forms
 
 tol = 1.0e-2                       # numerical tolerance for boundary geometry:
                                    # s(x,t) - b(x) > tol on ice-water boundary,
@@ -63,7 +63,7 @@ tol = 1.0e-2                       # numerical tolerance for boundary geometry:
 
 # geometry/mesh parameters
 Hght = args.H                      # (initial) height of the domain (m)
-Lngth = 100*1000.0                 # length of the domain (m)
+Lngth = 40*1000.0                  # length of the domain (m)
 
 Ny = int(Hght/500.0)               # number of elements in vertical direction
 Nx = int(Lngth/500.0)              # number of elements in horizontal direction
@@ -78,7 +78,7 @@ dt = t_final/nt                    # timestep size
 
 # spatial coordinate for plotting and interpolation
 
-nx = 10000                         # number of grid points for interpolating
+nx = 10*Nx                         # number of grid points for interpolating
                                    # free surfaces and plotting (larger
                                    # than true number elements Nx)
 
