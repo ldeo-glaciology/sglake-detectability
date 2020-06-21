@@ -10,6 +10,8 @@ parser.add_argument('-H', type=float, default=1000.0, metavar='thickness',
                     help='Ice thickness (m)')
 parser.add_argument('-pd', type=float, default=2, metavar='period',
                     help='Filling/draining oscillation period (yr)')
+parser.add_argument('-inflow_bcs', type=str, default='freeflow', metavar='noflow/freeflow',
+                    help='Set the inflow/outflow boundary conditions')
 parser.add_argument('-plotting', type=str, default='off', metavar='on/off',
                     help='Turn real-time plotting \'on\' or \'off\' ')
 parser.add_argument('-print_info', type=str, default='off', metavar='on/off',
@@ -55,9 +57,9 @@ C = args.C                         # sliding law friction coefficient (Pa s/m)
 eps_p = 1.0e-13                    # penalty method parameter for unilateral condition
 eps_v = 1.0e-15                    # flow law regularization parameter
 
-quad_degree = 22                   # quadrature degree for weak forms
+quad_degree = 16                   # quadrature degree for weak forms
 
-tol = 1.0e-2                       # numerical tolerance for boundary geometry:
+tol = 1.0e-3                       # numerical tolerance for boundary geometry:
                                    # s(x,t) - b(x) > tol on ice-water boundary,
                                    # s(x,t) - b(x) <= tol on ice-bed boundary.
 
@@ -65,8 +67,8 @@ tol = 1.0e-2                       # numerical tolerance for boundary geometry:
 Hght = args.H                      # (initial) height of the domain (m)
 Lngth = 40*1000.0                  # length of the domain (m)
 
-Ny = int(Hght/500.0)               # number of elements in vertical direction
-Nx = int(Lngth/500.0)              # number of elements in horizontal direction
+Ny = int(Hght/250.0)               # number of elements in vertical direction
+Nx = int(Lngth/250.0)              # number of elements in horizontal direction
 
 
 # time-stepping parameters
@@ -78,9 +80,18 @@ dt = t_final/nt                    # timestep size
 
 # spatial coordinate for plotting and interpolation
 
-nx = 10*Nx                         # number of grid points for interpolating
+nx = 4*Nx                          # number of grid points for interpolating
                                    # free surfaces and plotting (larger
                                    # than true number elements Nx)
 
 X_fine = np.linspace(0,Lngth,nx)   # horizontal coordinate for computing surface
                                    # slopes and plotting.
+
+# set inflow boundary conditions
+inflow_bcs = args.inflow_bcs
+
+## inflow_bcs = 'freeflow'         # cryostatic normal stress condition and zero
+                                   # vertical velocity on inflow/outflow boundaries
+
+## inflow_bcs = 'noflow'           # zero horizontal velocity and vertical shear
+                                   # stress on inflow/outflow boundaries

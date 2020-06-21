@@ -106,13 +106,18 @@ are created by linear interpolation of the mesh nodes in SciPy.
 Model options and parameters are set on the command line. To see a list of model options,
 run `python3 ./source/main.py -h`.  Most importantly:
 
-1. Parameters of interest are `pd` (period of oscillation, yr),
-`H` (ice thickness, meters), and `C`
-(basal drag coefficient, Pa s/m). For example, running
-`python3 ./source/main.py -H 1000 -C 1e9 -pd 2` sets the ice thickness
-to 1 km, basal drag to 10^9 Pa s/m, and oscillation period to 2 years.
+1. The inflow/outflow boundary conditions can be set to either `inflow_bcs = freeflow`
+or `inflow_bcs = noflow`. The `freeflow` condition sets a cryostatic normal
+stress and zero vertical velocity. The `noflow` condition sets zero horizontal
+velocity and zero shear stress. The `freeflow` condition allows ice to be pulled/pushed
+in/out of the domain during lake draining/filling, while the `noflow` condition
+does not allow this.
 
-2. *Real-time plotting* is available by setting `-plotting on`.
+2. Parameters of interest are `pd` (period of oscillation, yr),
+`H` (ice thickness, meters), and `C`
+(basal drag coefficient, Pa s/m).
+
+3. *Real-time plotting* is available by setting `-plotting on`.
 This outputs a png called 'surfaces' of the free surface geometry at each
 timestep.
 
