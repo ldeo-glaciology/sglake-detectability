@@ -73,7 +73,7 @@ Nx = int(Lngth/250.0)              # number of elements in horizontal direction
 
 # time-stepping parameters
 t_period = args.pd*3.154e7         # oscillation period (secs; yr*sec_per_year)
-t_final = 2.0*t_period             # final time
+t_final = 1.6*t_period             # final time
 nt_per_cycle = 500                 # number of timesteps per oscillation
 nt = int(t_final/t_period*nt_per_cycle) # number of time steps
 dt = t_final/nt                    # timestep size
