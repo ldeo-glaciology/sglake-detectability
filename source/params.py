@@ -59,7 +59,7 @@ eps_v = 1.0e-15                    # flow law regularization parameter
 
 quad_degree = 20                   # quadrature degree for weak forms
 
-tol = 1.0e-3                       # numerical tolerance for boundary geometry:
+tol = 1.0e-2                       # numerical tolerance for boundary geometry:
                                    # s(x,t) - b(x) > tol on ice-water boundary,
                                    # s(x,t) - b(x) <= tol on ice-bed boundary.
 
