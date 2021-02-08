@@ -9,7 +9,9 @@ filling-draining events. The model is 2D isothermal Stokes flow with nonlinear
 surface evolution are included. The contact conditions that determine whether
 ice remains in contact with the bed or goes afloat are enforced with a penalty
 functional. I am using this model to study the "detectability" of subglacial
-lake filling/draining events from surface observations.
+lake filling/draining events from surface observations. There is also
+a linearized (small-perturbation) version of the model that is used to
+produce water volume change and lake length estimates (see *linear-model* description below).
 
 # Dependencies
 ## Required dependencies
@@ -62,8 +64,31 @@ the comments at the top of the **make_movie.py** file:
 
 These scripts are run from the parent directory.
 
-# Running the code
-To run the code:
+## 3. Linear model
+The *linear-model* directory contains two files that are based on a small-perturbation
+approximation of the free surface model. The model is very computationally efficient
+in this context, relying only on Fourier transforms and quadrature. They work
+with the lastest version of SciPy (1.6).
+The files are:
+
+1. **ratios.py**: Constructs volume change and lake length estimates
+relative to their true values for a given range of ice thickness, oscillation period,
+and basal friction coefficient.
+
+2. **map.py**: Computes the minimum detectable lake length as a function of
+the ice thickness and basal friction coefficient. This can then be used to convert
+maps of the ice thickness and basal friction into a map of the minimum detectable
+lake length upon setting some other parameters (primarily oscillation amplitude and period).
+Note: this second part requires having the data (need to make available).
+
+These files are run by: `python3 filename.py`.
+Plots of the results are automatically produced and saved as png's.
+
+Note: this model assumes a constant value for the ice viscosity. The default
+value (10^12 Pa s) produces results that agree quite well with the nonlinear free-surface model.
+
+# Running the FEniCS code
+To run the FEniCS code:
 
 1. Start the FEniCS Docker image.
 
@@ -74,7 +99,7 @@ Read below for a discussion of model options.
 
 # Output
 
-Model output is saved in a *results_tX_HY_CZ* directory, where X is the
+Model output from the FEniCS code is saved in a *results_tX_HY_CZ* directory, where X is the
 oscillation period in years, Y is the ice thickness in km, and Z = log_10 (C),
 where C is the sliding law coefficient (C=10^Z, units of Pa s/m). The directory includes
 
@@ -103,7 +128,7 @@ are created by linear interpolation of the mesh nodes in SciPy.
 
 # Model options
 
-Model options and parameters are set on the command line. To see a list of model options,
+FEniCS model options and parameters are set on the command line. To see a list of model options,
 run `python3 ./source/main.py -h`.  Most importantly:
 
 1. The inflow/outflow boundary conditions can be set to either `inflow_bcs = freeflow`
