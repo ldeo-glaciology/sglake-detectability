@@ -1,7 +1,5 @@
 sglake-detectability
 
-Author: Aaron Stubblefield (Columbia University, LDEO).
-
 # Overview
 This repository contains FEniCS python code for simulating subglacial lake
 filling-draining events. The model is 2D isothermal Stokes flow with nonlinear
