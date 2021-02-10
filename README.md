@@ -80,7 +80,14 @@ lake length upon setting some other parameters (primarily oscillation amplitude 
 Note: this second part requires having the data (need to make available).
 
 These files are run by: `python3 filename.py`.
+
 Plots of the results are automatically produced and saved as png's.
+
+A Jupyter notebook for the running **map.py** is impleneted in **PlotMap.ipynb**.
+
+This can be run with Pangeo-Binder via the link:
+[![Binder](https://binder.pangeo.io/badge_logo.svg)](https://binder.pangeo.io/v2/gh/ldeo-glaciology/sglake-detectability/8620b6e6b01fda4604af80e0ef34931f7d1ef7ea?filepath=linear-model%2FPlotMap.ipynb)
+
 
 Note: this model assumes a constant value for the ice viscosity. The default
 value (10^12 Pa s) produces results that agree quite well with the nonlinear free-surface model.
