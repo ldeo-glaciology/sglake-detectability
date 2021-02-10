@@ -83,7 +83,7 @@ These files are run by: `python3 filename.py`.
 
 Plots of the results are automatically produced and saved as png's.
 
-A Jupyter notebook for the running **map.py** is impleneted in **PlotMap.ipynb**.
+A Jupyter notebook for the running **map.py** is implemented in **PlotMap.ipynb**.
 
 This can be run with Pangeo-Binder via the link:
 [![Binder](https://binder.pangeo.io/badge_logo.svg)](https://binder.pangeo.io/v2/gh/pangeo-gallery/default-binder/master/?urlpath=git-pull?repo=https://github.com/ldeo-glaciology/sglake-detectability.git%26amp%3Burlpath=lab/tree/sglake-detectability.git/linear-model/PlotMap.ipynb)
