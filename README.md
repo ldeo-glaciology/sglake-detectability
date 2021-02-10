@@ -7,7 +7,9 @@ filling-draining events. The model is 2D isothermal Stokes flow with nonlinear
 surface evolution are included. The contact conditions that determine whether
 ice remains in contact with the bed or goes afloat are enforced with a penalty
 functional. I am using this model to study the "detectability" of subglacial
-lake filling/draining events from surface observations. There is also
+lake filling/draining events from surface observations. 
+
+There is also
 a linearized (small-perturbation) version of the model that is used to
 produce water volume change and lake length estimates (see *linear-model* description below).
 
