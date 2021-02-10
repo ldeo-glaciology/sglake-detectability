@@ -158,7 +158,6 @@ Ls = np.linspace(100,1,101)             # array of lake lengths (relative to ice
 N_pts = 20                              # number of ice thickness and friction
                                         # values (between max and min values from data)
                                         # for constructing minimum lake size function
-                                        # (the total number of computations is N_pts**2)
 
 # 3. ------------------------------ LOAD DATA-----------------------------------
 data_dict = loadmat('beta_h.mat')
