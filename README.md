@@ -86,7 +86,7 @@ Plots of the results are automatically produced and saved as png's.
 A Jupyter notebook for the running **map.py** is impleneted in **PlotMap.ipynb**.
 
 This can be run with Pangeo-Binder via the link:
-[![Binder](https://binder.pangeo.io/badge_logo.svg)](https://binder.pangeo.io/v2/gh/ldeo-glaciology/sglake-detectability/8620b6e6b01fda4604af80e0ef34931f7d1ef7ea?filepath=linear-model%2FPlotMap.ipynb)
+[![Binder](https://binder.pangeo.io/badge_logo.svg)](https://binder.pangeo.io/v2/gh/pangeo-gallery/default-binder/master/?urlpath=git-pull?repo=https://github.com/ldeo-glaciology/sglake-detectability.git%26amp%3Burlpath=lab/tree/sglake-detectability.git/linear-model/PlotMap.ipynb)
 
 
 Note: this model assumes a constant value for the ice viscosity. The default
