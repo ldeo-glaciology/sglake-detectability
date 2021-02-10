@@ -31,6 +31,8 @@ import matplotlib as mpl
 import numpy as np
 from scipy.io import loadmat
 import copy
+import xarray as xr
+import fsspec
 
 
 # 1.---------------FUNCTIONS FOR COMPUTING MINIMUM DETECTABLE LAKE SIZE---------
@@ -160,12 +162,12 @@ N_pts = 20                              # number of ice thickness and friction
                                         # for constructing minimum lake size function
 
 # 3. ------------------------------ LOAD DATA-----------------------------------
-data_dict = loadmat('beta_h.mat')
-
-X = data_dict['x']                      # horizontal x coordinate
-Y = data_dict['y']                      # horizontal y coordinate
-beta_d = data_dict['beta']*3.154e7      # (dimensional) friction coefficient (Pa s / m)
-H = data_dict['h']                      # ice thickness (m)
+H_beta_mapper = fsspec.get_mapper('gs://ldeo-glaciology/bedmachine/H_beta.zarr', mode='ab')
+H_beta = xr.open_zarr(H_beta_mapper)
+H_beta.load()
+X, Y = np.meshgrid(H_beta.x,H_beta.y) # horizontal map coordinates
+beta_d = H_beta.beta.data               # (dimensional) friction coefficient (Pa s / m)
+H = H_beta.thickness.data               # ice thickness (m)
 
 
 # 4.------COMPUTE MINIMUM DETECTABLE LAKE SIZE AS FUNCTION OF BETA AND H--------
@@ -205,11 +207,13 @@ for i in range(np.shape(Ls_map)[0]):
 print(str(100*l/int(np.size(Ls_map)))+' % complete')
 print('\n')
 
+# mask out ice shelves (friction is nonzero there probably for inversion purposes)
+Ls_map[beta_d<1e5] = 0
 
 # 6. ----------------------- PLOTTING ------------------------------------------
 print('plotting....')
 levels_H = np.array([0,500,1000,1500,2000,2500,3000,3500,4000,4500])/1000.0
-levels_beta = np.array([1e6,1e8,1e10,1e12,1e14,1e16])
+levels_beta = np.array([1e6,1e8,1e10,1e12,1e14])
 
 levels_L = np.array([0,5,10,15,20,25,30])
 
