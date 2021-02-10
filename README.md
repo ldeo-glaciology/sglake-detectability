@@ -77,9 +77,11 @@ and basal friction coefficient.
 the ice thickness and basal friction coefficient. This can then be used to convert
 maps of the ice thickness and basal friction into a map of the minimum detectable
 lake length upon setting some other parameters (primarily oscillation amplitude and period).
-Note: this second part requires having the data (need to make available).
 
 These files are run by: `python3 filename.py`.
+
+The data used to construct the map is from the publication:
+>Arthern, R. J., Hindmarsh, R. C., & Williams, C. R. (2015). Flow speed within the Antarctic ice sheet and its controls inferred from satellite observations. Journal of Geophysical Research: Earth Surface, 120(7), 1171-1188.
 
 Plots of the results are automatically produced and saved as png's.
 
