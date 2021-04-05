@@ -1,7 +1,7 @@
 # This file contains the functions needed for solving the Stokes system.
 
-from params import rho_i,g,tol,B,rm2,rho_w,C,eps_p,eps_v,dt,quad_degree,Lngth,inflow_bcs
-from boundaryconds import mark_boundary, create_dir_bcs
+from params import rho_i,g,tol,B,rm2,rho_w,C,eps_p,eps_v,dt,quad_degree,Lngth,sigma_0
+from boundaryconds import mark_boundary
 from geometry import bed
 from hydrology import Vdot
 import numpy as np
@@ -18,6 +18,12 @@ def Pi(u,nu):
         un = dot(u,nu)
         return 0.5*(un**2.0+un*abs(un))
 
+def eta(u):
+        return 0.5*B*((inner(sym(grad(u)),sym(grad(u)))+Constant(eps_v))**(rm2/2.0))
+
+def sigma(u,p):
+        return -p*Identity(2) + 2*eta(u)*sym(grad(u))
+
 def weak_form(u,p,pw,v,q,qw,f,g_lake,g_in,g_out,ds,nu,T,lake_vol_0,t):
     # define weak form of the subglacial lake problem
 
@@ -26,19 +32,15 @@ def weak_form(u,p,pw,v,q,qw,f,g_lake,g_in,g_out,ds,nu,T,lake_vol_0,t):
     L1 = Constant(assemble(1*ds(4)))
 
     # Nonlinear residual
-    Fw = B*((inner(sym(grad(u)),sym(grad(u)))+Constant(eps_v))**(rm2/2.0))*inner(sym(grad(u)),sym(grad(v)))*dx\
-         +(- div(v)*p + q*div(u))*dx - inner(f, v)*dx\
+    Fw =  2*eta(u)*inner(sym(grad(u)),sym(grad(v)))*dx + (- div(v)*p + q*div(u))*dx - inner(f, v)*dx\
          + (g_lake+pw+Constant(rho_w*g*dt)*(dot(u,nu)+Constant(Vdot(lake_vol_0,t)/L1)))*inner(nu, v)*ds(4)\
          + qw*(inner(u,nu)+Constant(Vdot(lake_vol_0,t))/(L0))*ds(4)\
-         + (g_lake+pw+Constant(rho_w*g*dt)*(dot(u,nu)+Constant(Vdot(lake_vol_0,t)/L1)))*inner(nu, v)*ds(3)\
+         + (g_lake+pw-Constant(sigma_0)+Constant(rho_w*g*dt)*(dot(u,nu)+Constant(Vdot(lake_vol_0,t)/L1)))*inner(nu, v)*ds(3)\
          + qw*(inner(u,nu)+Constant(Vdot(lake_vol_0,t))/(L0) )*ds(3)\
          + Constant(1/eps_p)*dPi(u,nu)*dot(v,nu)*ds(3)\
-         + Constant(C)*inner(dot(T,u),dot(T,v))*ds(3)
-
-    # append cryostatic normal stress (neumann) boundary conditions in the
-    # free horizontal inflow case
-    if inflow_bcs == 'freeflow':
-         Fw +=  g_out*inner(nu,v)*ds(2) + g_in*inner(nu,v)*ds(1)
+         + Constant(C)*inner(dot(T,u),dot(T,v))*ds(3) \
+         + g_out*inner(nu,v)*ds(2) + g_in*inner(nu,v)*ds(1) \
+         - inner( dot(T, dot(sigma(u,p),nu)),dot(T,v) )*ds(1) - inner( dot(T, dot(sigma(u,p),nu)),dot(T,v) )*ds(2)
 
     return Fw
 
@@ -82,11 +84,8 @@ def stokes_solve_lake(mesh,lake_vol_0,s_mean,F_h,t):
         # define weak form
         Fw = weak_form(u,p,pw,v,q,qw,f,g_lake,g_in,g_out,ds,nu,T,lake_vol_0,t)
 
-        # create dirichlet boundary conditions
-        bcs_u = create_dir_bcs(W,boundary_markers)
-
         # solve for (u,p,pw).
-        solve(Fw == 0, w, bcs=bcs_u,solver_parameters={"newton_solver":{"relative_tolerance": 1e-14,"maximum_iterations":50}},form_compiler_parameters={"quadrature_degree":quad_degree,"optimize":True,"eliminate_zeros":False})
+        solve(Fw == 0, w, bcs=[],solver_parameters={"newton_solver":{"relative_tolerance": 1e-14,"maximum_iterations":50}},form_compiler_parameters={"quadrature_degree":quad_degree,"optimize":True,"eliminate_zeros":False})
 
         # return solution w
         return w

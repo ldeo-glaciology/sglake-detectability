@@ -7,7 +7,7 @@ filling-draining events. The model is 2D isothermal Stokes flow with nonlinear
 surface evolution are included. The contact conditions that determine whether
 ice remains in contact with the bed or goes afloat are enforced with a penalty
 functional. I am using this model to study the "detectability" of subglacial
-lake filling/draining events from surface observations. 
+lake filling/draining events from surface observations.
 
 There is also
 a linearized (small-perturbation) version of the model that is used to
@@ -140,18 +140,11 @@ are created by linear interpolation of the mesh nodes in SciPy.
 FEniCS model options and parameters are set on the command line. To see a list of model options,
 run `python3 ./source/main.py -h`.  Most importantly:
 
-1. The inflow/outflow boundary conditions can be set to either `inflow_bcs = freeflow`
-or `inflow_bcs = noflow`. The `freeflow` condition sets a cryostatic normal
-stress and zero vertical velocity. The `noflow` condition sets zero horizontal
-velocity and zero shear stress. The `freeflow` condition allows ice to be pulled/pushed
-in/out of the domain during lake draining/filling, while the `noflow` condition
-does not allow this.
+1. Parameters of interest are `pd` (period of oscillation, yr),
+`H` (ice thickness, meters), `C`
+(basal drag coefficient, Pa s/m), and `L` (domain length, km).
 
-2. Parameters of interest are `pd` (period of oscillation, yr),
-`H` (ice thickness, meters), and `C`
-(basal drag coefficient, Pa s/m).
-
-3. *Real-time plotting* is available by setting `-plotting on`.
+2. *Real-time plotting* is available by setting `-plotting on`.
 This outputs a png called 'surfaces' of the free surface geometry at each
 timestep.
 

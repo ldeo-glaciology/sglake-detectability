@@ -8,7 +8,9 @@ parser.add_argument('-C', type=float, default=1.0e9, metavar='drag_coeff',
                     help='Basal drag coefficient (Pa s/m)')
 parser.add_argument('-H', type=float, default=1000.0, metavar='thickness',
                     help='Ice thickness (m)')
-parser.add_argument('-pd', type=float, default=2, metavar='period',
+parser.add_argument('-L', type=float, default=60.0, metavar='domain length',
+                    help='Length of domain (km)')
+parser.add_argument('-pd', type=float, default=4, metavar='period',
                     help='Filling/draining oscillation period (yr)')
 parser.add_argument('-inflow_bcs', type=str, default='freeflow', metavar='noflow/freeflow',
                     help='Set the inflow/outflow boundary conditions')
@@ -57,7 +59,13 @@ C = args.C                         # sliding law friction coefficient (Pa s/m)
 eps_p = 1.0e-13                    # penalty method parameter for unilateral condition
 eps_v = 1.0e-15                    # flow law regularization parameter
 
-quad_degree = 20                   # quadrature degree for weak forms
+sigma_0 = 1000.0                   # minimum separation stress (default 1 kPa):
+                                   # water pressure must exceed the normal stress
+                                   # by this amount for ice-bed separation to occur
+                                   # (has a regularizing effect that leads to better convergence)
+
+
+quad_degree = 16                   # quadrature degree for weak forms
 
 tol = 1.0e-2                       # numerical tolerance for boundary geometry:
                                    # s(x,t) - b(x) > tol on ice-water boundary,
@@ -65,7 +73,7 @@ tol = 1.0e-2                       # numerical tolerance for boundary geometry:
 
 # geometry/mesh parameters
 Hght = args.H                      # (initial) height of the domain (m)
-Lngth = 40*1000.0                  # length of the domain (m)
+Lngth = args.L*1000.0              # length of the domain (m)
 
 Ny = int(Hght/250.0)               # number of elements in vertical direction
 Nx = int(Lngth/250.0)              # number of elements in horizontal direction
@@ -73,7 +81,7 @@ Nx = int(Lngth/250.0)              # number of elements in horizontal direction
 
 # time-stepping parameters
 t_period = args.pd*3.154e7         # oscillation period (secs; yr*sec_per_year)
-t_final = 1.6*t_period             # final time
+t_final = 2.0*t_period             # final time
 nt_per_cycle = 500                 # number of timesteps per oscillation
 nt = int(t_final/t_period*nt_per_cycle) # number of time steps
 dt = t_final/nt                    # timestep size
@@ -86,12 +94,3 @@ nx = 4*Nx                          # number of grid points for interpolating
 
 X_fine = np.linspace(0,Lngth,nx)   # horizontal coordinate for computing surface
                                    # slopes and plotting.
-
-# set inflow boundary conditions
-inflow_bcs = args.inflow_bcs
-
-## inflow_bcs = 'freeflow'         # cryostatic normal stress condition and zero
-                                   # vertical velocity on inflow/outflow boundaries
-
-## inflow_bcs = 'noflow'           # zero horizontal velocity and vertical shear
-                                   # stress on inflow/outflow boundaries
