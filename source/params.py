@@ -8,7 +8,7 @@ parser.add_argument('-C', type=float, default=1.0e9, metavar='drag_coeff',
                     help='Basal drag coefficient (Pa s/m)')
 parser.add_argument('-H', type=float, default=1000.0, metavar='thickness',
                     help='Ice thickness (m)')
-parser.add_argument('-L', type=float, default=120.0, metavar='domain length',
+parser.add_argument('-L', type=float, default=100.0, metavar='domain length',
                     help='Length of domain (km)')
 parser.add_argument('-pd', type=float, default=4, metavar='period',
                     help='Filling/draining oscillation period (yr)')
@@ -79,7 +79,7 @@ Nx = int(Lngth/250.0)              # number of elements in horizontal direction
 
 # time-stepping parameters
 t_period = args.pd*3.154e7         # oscillation period (secs; yr*sec_per_year)
-t_final = 2.0*t_period             # final time
+t_final = 1.75*t_period            # final time
 nt_per_cycle = 500                 # number of timesteps per oscillation
 nt = int(t_final/t_period*nt_per_cycle) # number of time steps
 dt = t_final/nt                    # timestep size
