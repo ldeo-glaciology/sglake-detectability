@@ -8,12 +8,10 @@ parser.add_argument('-C', type=float, default=1.0e9, metavar='drag_coeff',
                     help='Basal drag coefficient (Pa s/m)')
 parser.add_argument('-H', type=float, default=1000.0, metavar='thickness',
                     help='Ice thickness (m)')
-parser.add_argument('-L', type=float, default=60.0, metavar='domain length',
+parser.add_argument('-L', type=float, default=120.0, metavar='domain length',
                     help='Length of domain (km)')
 parser.add_argument('-pd', type=float, default=4, metavar='period',
                     help='Filling/draining oscillation period (yr)')
-parser.add_argument('-inflow_bcs', type=str, default='freeflow', metavar='noflow/freeflow',
-                    help='Set the inflow/outflow boundary conditions')
 parser.add_argument('-plotting', type=str, default='off', metavar='on/off',
                     help='Turn real-time plotting \'on\' or \'off\' ')
 parser.add_argument('-print_info', type=str, default='off', metavar='on/off',
