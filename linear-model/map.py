@@ -2,9 +2,9 @@
 # lake size, and timing of subglacial lake filling-draining cycles
 #
 # OVERVIEW
-# this code constructs a maps of the estimated vs. true water volume change,
+# this code constructs maps of the estimated vs. true water volume change,
 # lake size, and highstand/lowstand times of subglacial lake filling-draining
-# cyces, given maps of the ice thickness and basal friction coefficient.
+# cycles, given maps of the ice thickness and basal friction coefficient.
 #
 # the computation is based on a small-perturbation ice-flow model
 # --see the supporting information for a full description of the method.
