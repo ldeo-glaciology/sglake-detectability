@@ -6,11 +6,10 @@ filling-draining events. The model is 2D isothermal Stokes flow with nonlinear
 ("Glen's law") viscosity. Grounding line migration and ice-water/ice-air free
 surface evolution are included. The contact conditions that determine whether
 ice remains in contact with the bed or goes afloat are enforced with a penalty
-functional. I am using this model to study the "detectability" of subglacial
+functional. We are using this model to study the "observability" of subglacial
 lake filling/draining events from surface observations.
 
-There is also
-a linearized (small-perturbation) version of the model that is used to
+There is also a linearized (small-perturbation) version of the model that is used to
 produce water volume change and lake length estimates (see *linear-model* description below).
 
 # Dependencies
@@ -71,14 +70,12 @@ in this context, relying only on Fourier transforms and quadrature. They work
 with the lastest version of SciPy (1.6).
 The files are:
 
-1. **ratios.py**: Constructs volume change and lake length estimates
-relative to their true values for a given range of ice thickness, oscillation period,
-and basal friction coefficient.
+1. **ratios.py**: Constructs volume change, lake length, and phase lag estimates
+for a given range of ice thickness, oscillation period, and basal friction coefficient.
 
-2. **map.py**: Computes the minimum detectable lake length as a function of
-the ice thickness and basal friction coefficient. This can then be used to convert
-maps of the ice thickness and basal friction into a map of the minimum detectable
-lake length upon setting some other parameters (primarily oscillation amplitude and period).
+2. **map.py**: Computes maps of the volume change, lake length, and phase lag estimates
+given maps of the ice thickness and basal friction coefficient. To do so, the
+oscillation period, amplitude, and lake length must be chosen.
 
 These files are run by: `python3 filename.py`.
 
@@ -94,7 +91,7 @@ This can be run with Pangeo-Binder via the link:
 
 
 Note: this model assumes a constant value for the ice viscosity. The default
-value (10^12 Pa s) produces results that agree quite well with the nonlinear free-surface model.
+value (10^13 Pa s) produces results that agree quite well with the nonlinear free-surface model.
 
 # Running the FEniCS code
 To run the FEniCS code:
