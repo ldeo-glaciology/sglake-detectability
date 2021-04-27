@@ -299,4 +299,5 @@ cbar3.ax.invert_yaxis()
 
 plt.tight_layout()
 plt.savefig('maps')
+plt.show()
 plt.close()
