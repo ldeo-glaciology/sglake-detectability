@@ -59,11 +59,11 @@ def get_Dj(lamda,beta_nd,w_ft,k):
 
     return D1,D2
 
-def get_Tj(D1,D2,x):
+def get_Tj(D1,D2,x,H):
     # times where elevation anomaly is maximized (T1) and minimized (T2)
     # these are the estimated highstand/lowstand times
-    T1 = np.pi - np.arctan(np.max(D2)/np.max(D1))
-    T2 = 2*np.pi - np.arctan(np.max(D2)/np.max(D1))
+    T1 = np.pi - np.arctan(np.mean(D2[np.abs(x)*H/1000<10])/np.mean(D1[np.abs(x)*H/1000<10]))
+    T2 = 2*np.pi - np.arctan(np.mean(D2[np.abs(x)*H/1000<10])/np.mean(D1[np.abs(x)*H/1000<10]))
 
     return T1,T2
 
@@ -107,7 +107,7 @@ def get_ratios(H,t_pd,beta_d,L_true):
 
     D1,D2 = get_Dj(lamda,beta_nd,w_ft,k)   # compute surface displacements
 
-    T1,T2 = get_Tj(D1,D2,x)                # compute estimated highstand/lowstand times
+    T1,T2 = get_Tj(D1,D2,x,H)              # compute estimated highstand/lowstand times
 
     kappa1,kappa2 = get_kappaj(T1,T2)      # compute weights for displacements
 
@@ -171,7 +171,7 @@ N_pts = 20                              # number of ice thickness and friction
 
 # 3. ------------------------------ LOAD DATA-----------------------------------
 gcs = gcsfs.GCSFileSystem()
-H_beta_mapper = gcs.get_mapper('gs://ldeo-glaciology/bedmachine/H_beta.zarr')#, mode='ab')
+H_beta_mapper = gcs.get_mapper('gs://ldeo-glaciology/bedmachine/H_beta.zarr')
 H_beta = xr.open_zarr(H_beta_mapper)
 H_beta.load()
 
@@ -191,7 +191,7 @@ dV = np.zeros((np.size(H_int),np.size(beta_int)))       # volume change
 dL = np.zeros((np.size(H_int),np.size(beta_int)))       # lake size
 lag = np.zeros((np.size(H_int),np.size(beta_int)))      # phase lag
 
-print('Computing water volume change, lake size, and timing estimates as functions of friction and ice thickness....')
+print('Computing water volume change, lake size, and phase lag estimates as functions of friction and ice thickness....')
 
 l = 0
 for i in range(np.shape(dV)[0]):
@@ -217,7 +217,7 @@ dV_map = np.zeros(np.shape(beta_d))     # volume change estimate map
 dL_map = np.zeros(np.shape(beta_d))     # lake length estimate map
 lag_map = np.zeros(np.shape(beta_d))    # phase lag map
 
-print('Constructing map....')
+print('Constructing maps....')
 l = 0
 for i in range(np.shape(dV_map)[0]):
     for j in range(np.shape(dV_map)[1]):

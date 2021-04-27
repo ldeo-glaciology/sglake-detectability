@@ -91,7 +91,8 @@ This can be run with Pangeo-Binder via the link:
 
 
 Note: this model assumes a constant value for the ice viscosity. The default
-value (10^13 Pa s) produces results that agree quite well with the nonlinear free-surface model.
+value (10^13 Pa s) is approximately equal to the maximum default viscosity
+(viscosity at zero strain rate) in the full nonlinear model.
 
 # Running the FEniCS code
 To run the FEniCS code:

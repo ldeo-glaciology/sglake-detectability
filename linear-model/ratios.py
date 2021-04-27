@@ -55,11 +55,11 @@ def get_Dj(lamda,beta_nd,w_ft,k):
 
     return D1,D2
 
-def get_Tj(D1,D2,x):
+def get_Tj(D1,D2,x,H):
     # Times where elevation anomaly is maximized (T1) and minimized (T2),
 
-    T1 = np.pi - np.arctan(np.max(D2)/np.max(D1))
-    T2 = 2*np.pi - np.arctan(np.max(D2)/np.max(D1))
+    T1 = np.pi - np.arctan(np.mean(D2[np.abs(x)*H/1000<10])/np.mean(D1[np.abs(x)*H/1000<10]))
+    T2 = 2*np.pi - np.arctan(np.mean(D2[np.abs(x)*H/1000<10])/np.mean(D1[np.abs(x)*H/1000<10]))
 
     return T1,T2
 
@@ -76,8 +76,6 @@ def get_ratios(H,t_pd,beta_d,Ls):
     # compute ratios of the estimated lake length (dL) and water volume change (dV)
     # relative to their true values given the true lake length (Ls),
     # dimensional friction (beta_d), and ice thickness (H)
-
-    # 200 km = xp * H
 
     # discretization in frequency domain
     N = 2000
@@ -100,7 +98,7 @@ def get_ratios(H,t_pd,beta_d,Ls):
 
     D1,D2 = get_Dj(lamda,beta_nd,w_ft,k)   # compute surface displacements
 
-    T1,T2 = get_Tj(D1,D2,x)                # compute estimated highstand/lowstand times
+    T1,T2 = get_Tj(D1,D2,x,H)              # compute estimated highstand/lowstand times
 
     kappa1,kappa2 = get_kappaj(T1,T2)      # compute weights for displacements
 
@@ -158,7 +156,7 @@ g = 9.81                                # gravitational acceleration m^2/s
 
 Ls = 10*1000.0                          # lake length (km)
 
-N_pts = 20                              # number of ice thickness and friction
+N_pts = 100                              # number of ice thickness and friction
                                         # values (between max and min values from data)
                                         # for constructing minimum lake size function
                                         # (the total number of computations is N_pts**2)
@@ -297,7 +295,6 @@ plt.gca().yaxis.set_ticklabels([])
 plt.subplot(347)
 plt.annotate(r'(g)',xy=(1.075,7.325),fontsize=16,bbox=dict(facecolor='w',alpha=1))
 plt.contourf(H/1000,t_pd/3.154e7,dL3,cmap=cmap2,levels=levelsL,extend='both')
-plt.contour(H/1000,t_pd/3.154e7,dL3,colors='k',linewidths=3,levels=[1e-10])
 plt.xticks(fontsize=16)
 plt.yticks(fontsize=16)
 plt.gca().xaxis.set_ticklabels([])
