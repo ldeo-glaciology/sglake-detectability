@@ -64,13 +64,16 @@ the comments at the top of the **make_movie.py** file:
 These scripts are run from the parent directory.
 
 ## 3. Linear model
-The *linear-model* directory contains two files that are based on a small-perturbation
+The *linear-model* directory contains code that is based on a small-perturbation
 approximation of the free surface model. The model is very computationally efficient
 in this context, relying only on Fourier transforms and quadrature. They work
-with the lastest version of SciPy (1.6). The *data* subdirectory contains the
+with the lastest version of SciPy (1.6).
+
+The *data* subdirectory contains the
 ice thickness and basal sliding coefficient map (*H_beta.zarr*), and subglacial lake length/locations
 (*active_lake_statistics*)---see readme in the *data* directory.
-The files are:
+
+The programs are:
 
 1. **ratios.py**: Constructs volume change, lake length, and phase lag estimates
 for a given range of ice thickness, oscillation period, and basal sliding coefficient.
