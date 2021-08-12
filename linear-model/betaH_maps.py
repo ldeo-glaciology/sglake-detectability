@@ -29,7 +29,7 @@ H_beta.load()
 
 X, Y = np.meshgrid(H_beta.x,H_beta.y) # horizontal map coordinates
 beta_d = H_beta.beta.data               # (dimensional) basal sliding coefficient (Pa s / m)
-H = H_beta.thickness.data               # (dimensional) basal sliding coefficient (Pa s / m)
+H = H_beta.thickness.data               # ice thickness (m)
 
 
 

@@ -177,7 +177,7 @@ H_beta.load()
 
 X, Y = np.meshgrid(H_beta.x,H_beta.y)   # horizontal map coordinates
 beta_d = H_beta.beta.data               # (dimensional) drag coefficient (Pa s / m)
-H = H_beta.thickness.data               # (dimensional) drag coefficient (Pa s / m)
+H = H_beta.thickness.data               # ice thickness (m)
 
 active = np.loadtxt('data/active_lake_statistics.dat',delimiter=',')
 
