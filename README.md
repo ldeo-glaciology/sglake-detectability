@@ -71,7 +71,7 @@ with the lastest version of SciPy (1.7).
 
 The *data* subdirectory contains the
 ice thickness and basal sliding coefficient map (*H_beta.zarr*), and subglacial lake length/locations
-(*active_lake_statistics*)---see readme in the *data* directory.
+(*active_lake_statistics.dat*)---see readme in the *data* directory.
 
 The programs are:
 
