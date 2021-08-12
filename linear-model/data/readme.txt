@@ -1,7 +1,7 @@
-This directory contains two datasets:
-1. H_beta.zarr contains ice thickness (H) and basal sliding coefficient (beta)
- maps for the Antarctic Ice Sheet. betaH_maps.py in the parent directory shows
- how to load these with xarray.
+This directory contains two datasets: 1. H_beta.zarr contains ice thickness (H)
+and basal sliding coefficient (beta) maps for the Antarctic Ice Sheet. Spatial
+x-y coordinates are also included. betaH_maps.py in the parent directory shows
+how to load these with xarray.
 
 2. active_lake_statistics.dat contains subglacial lake locations and estimated
 lengths for the Antarctic Ice Sheet. Cols 1 and 2 are the PS71 x and y centroid
