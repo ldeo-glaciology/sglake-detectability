@@ -77,6 +77,8 @@ for a given range of ice thickness, oscillation period, and basal sliding coeffi
 given maps of the ice thickness and basal sliding coefficient. To do so, the
 oscillation period, amplitude, and lake length must be chosen.
 
+3. **betaH_maps.py**: Plots the ice thickness and basal sliding coefficient maps.
+
 These files are run by: `python3 filename.py`.
 
 The data used to construct the map is from the publication:
