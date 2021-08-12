@@ -67,7 +67,7 @@ These scripts are run from the parent directory.
 The *linear-model* directory contains code that is based on a small-perturbation
 approximation of the free surface model. The model is very computationally efficient
 in this context, relying only on Fourier transforms and quadrature. They work
-with the lastest version of SciPy (1.6).
+with the lastest version of SciPy (1.7).
 
 The *data* subdirectory contains the
 ice thickness and basal sliding coefficient map (*H_beta.zarr*), and subglacial lake length/locations
