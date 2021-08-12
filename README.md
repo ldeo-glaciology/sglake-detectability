@@ -71,10 +71,10 @@ with the lastest version of SciPy (1.6).
 The files are:
 
 1. **ratios.py**: Constructs volume change, lake length, and phase lag estimates
-for a given range of ice thickness, oscillation period, and basal friction coefficient.
+for a given range of ice thickness, oscillation period, and basal sliding coefficient.
 
-2. **map.py**: Computes maps of the volume change, lake length, and phase lag estimates
-given maps of the ice thickness and basal friction coefficient. To do so, the
+2. **ratio_maps.py**: Computes maps of the volume change, lake length, and phase lag estimates
+given maps of the ice thickness and basal sliding coefficient. To do so, the
 oscillation period, amplitude, and lake length must be chosen.
 
 These files are run by: `python3 filename.py`.
@@ -84,15 +84,6 @@ The data used to construct the map is from the publication:
 
 Plots of the results are automatically produced and saved as png's.
 
-A Jupyter notebook for the running **map.py** is implemented in **PlotMap.ipynb**.
-
-This can be run with Pangeo-Binder via the link:
-[![Binder](https://binder.pangeo.io/badge_logo.svg)](https://binder.pangeo.io/v2/gh/pangeo-gallery/default-binder/master/?urlpath=git-pull?repo=https://github.com/ldeo-glaciology/sglake-detectability.git%26amp%3Burlpath=lab/tree/sglake-detectability.git/linear-model/PlotMap.ipynb)
-
-
-Note: this model assumes a constant value for the ice viscosity. The default
-value (10^13 Pa s) is approximately equal to the maximum default viscosity
-(viscosity at zero strain rate) in the full nonlinear model.
 
 # Running the FEniCS code
 To run the FEniCS code:

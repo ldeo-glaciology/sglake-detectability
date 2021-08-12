@@ -35,6 +35,7 @@ mpl.rcParams['ytick.minor.width'] = 1
 # 1.---------------FUNCTIONS FOR VOLUME CHANGE / LENGTH RATIOS------------------
 def get_Dj(lamda,beta_nd,w_ft,k):
     # function for computing displacements D1 (in-phase with base) and D2 (anti-phase with base)
+    k = np.abs(k)
     g = beta_nd/k
 
     # relaxation function
@@ -140,7 +141,7 @@ def get_ratios(H,t_pd,beta_d,Ls):
 # function for spatial component of basal vertical velocity anomaly
 # default is a Gaussian
 def w_base(x,Ls):
-    sigma = Ls/3                        # define standard deviation for Gaussian
+    sigma = Ls/4                        # define standard deviation for Gaussian
     w = np.exp(-0.5*(x/sigma)**2)
     return w
 
@@ -156,7 +157,7 @@ g = 9.81                                # gravitational acceleration m^2/s
 
 Ls = 10*1000.0                          # lake length (km)
 
-N_pts = 100                              # number of ice thickness and friction
+N_pts = 5                              # number of ice thickness and friction
                                         # values (between max and min values from data)
                                         # for constructing minimum lake size function
                                         # (the total number of computations is N_pts**2)
@@ -208,7 +209,7 @@ print('\n')
 print('plotting....')
 
 levelsV = np.linspace(0.0,1,num=6)
-levelsL = np.linspace(0.0,4,num=5)
+levelsL = np.linspace(0.0,3,num=7)
 levels_lag = np.linspace(0.0,1,num=6)
 
 cmap1 = copy.copy(mpl.cm.get_cmap("Blues"))
@@ -265,8 +266,8 @@ fig.subplots_adjust(right=0.85)
 cbar_ax = fig.add_axes([0.875, 0.665, 0.02, 0.2])
 cbar = fig.colorbar(p1,cax=cbar_ax,orientation='vertical',ticks=levelsV)
 cbar.set_label(r'$\frac{\Delta  V_\mathrm{est}}{\Delta V_\mathrm{true}}$',verticalalignment='center', rotation=0,fontsize=30)
-cbar.ax.set_yticklabels(['0.0 (not detected)','0.2','0.4','0.6','0.8','1.0'])
-cbar.ax.get_yaxis().labelpad = -70
+cbar.ax.set_yticklabels(['0.0 (unobservable)','0.2','0.4','0.6','0.8','1.0'])
+cbar.ax.get_yaxis().labelpad = -75
 cbar.ax.tick_params(labelsize=16)
 
 cbar.add_lines(l1)
@@ -295,6 +296,7 @@ plt.gca().yaxis.set_ticklabels([])
 plt.subplot(347)
 plt.annotate(r'(g)',xy=(1.075,7.325),fontsize=16,bbox=dict(facecolor='w',alpha=1))
 plt.contourf(H/1000,t_pd/3.154e7,dL3,cmap=cmap2,levels=levelsL,extend='both')
+plt.contour(H/1000,t_pd/3.154e7,dL3,colors='k',linewidths=3,levels=[1e-10])
 plt.xticks(fontsize=16)
 plt.yticks(fontsize=16)
 plt.gca().xaxis.set_ticklabels([])
@@ -312,10 +314,10 @@ plt.gca().yaxis.set_ticklabels([])
 fig.subplots_adjust(right=0.85)
 cbar_ax = fig.add_axes([0.875, 0.3925, 0.02, 0.2])
 cbar = fig.colorbar(p2,cax=cbar_ax,orientation='vertical',ticks=levelsL)
-cbar.set_label(r'$\frac{L_\mathrm{est}}{L_\mathrm{max}}$',verticalalignment='center', rotation=0,fontsize=30)
-cbar.ax.get_yaxis().labelpad = -80
+cbar.set_label(r'$\frac{L_\mathrm{est}}{L_\mathrm{true}}$',verticalalignment='center', rotation=0,fontsize=30)
+cbar.ax.set_yticklabels(['0.0 (unobservable)','0.5','1','1.5','2','2.5','3'])
+cbar.ax.get_yaxis().labelpad = -75
 cbar.ax.tick_params(labelsize=16)
-cbar.ax.set_yticklabels(['0.0 (not detected)','1','2','3','4'])
 cbar.add_lines(l2)
 
 #------------------- length estimates-------------------------------------------
@@ -360,11 +362,11 @@ fig.subplots_adjust(right=0.85)
 cbar_ax = fig.add_axes([0.875, 0.12, 0.02, 0.2])
 cbar = fig.colorbar(p3,cax=cbar_ax,orientation='vertical',ticks=levels_lag)
 cbar.set_label(r'$\phi_\mathrm{lag}$',verticalalignment='center', rotation=0,fontsize=24)
-cbar.ax.set_yticklabels(['0.0','0.2','0.4','0.6','0.8','1.0 (not detected)'])
-cbar.ax.get_yaxis().labelpad = -70
+cbar.ax.get_yaxis().labelpad = -75
+cbar.ax.set_yticklabels(['0.0','0.2','0.4','0.6','0.8','1.0 (unobservable)'])
 cbar.ax.tick_params(labelsize=16)
 cbar.ax.invert_yaxis()
 cbar.add_lines(l3)
 
-plt.savefig('ratios',bbox_inches='tight')
+plt.savefig('fig_S1',bbox_inches='tight')
 plt.close()
